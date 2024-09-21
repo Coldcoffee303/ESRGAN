@@ -35,7 +35,7 @@ class ESRGANTraining(Model):
         with GradientTape() as tape:
             predictions = self.discriminator(combinedImages)
 
-            dLoss = self.bceLoss(labels, prediction)
+            dLoss = self.bceLoss(labels, predictions)
 
         grads = tape.gradient(dLoss, self.discriminator.trainable_variables)
 

@@ -1,3 +1,4 @@
+#data_preprocess
 from tensorflow.io import FixedLenFeature
 from tensorflow.io import parse_single_example
 from tensorflow.io import parse_tensor
@@ -8,7 +9,7 @@ import tensorflow as tf
 #autotune object
 AUTO = tf.data.AUTOTUNE
 
-def random_crop(lrImage, hrImage, hrCropSize=128, scale=4):
+def random_crop(lrImage, hrImage, hrCropSize=64, scale=2):
     lrCropSize = hrCropSize // 2
     lrImageShape = tf.shape(lrImage)[:2]
 
@@ -28,7 +29,7 @@ def random_crop(lrImage, hrImage, hrCropSize=128, scale=4):
     
     return (lrImageCropped, hrImageCropped)
 
-def get_center_crop(lrImage, hrImage, hrCropSize=128, scale=4):
+def get_center_crop(lrImage, hrImage, hrCropSize=64, scale=2):
     
     lrCropSize = hrCropSize // scale
     lrImageShape = tf.shape(lrImage)[:2]
@@ -81,7 +82,7 @@ def read_train_example(example):
     (lrImage, hrImage) = random_rotate(lrImage, hrImage)
 
     lrImage = tf.reshape(lrImage, (32, 32, 3))
-    hrImage = tf.reshape(hrImage, (128, 128, 3))
+    hrImage = tf.reshape(hrImage, (64, 64, 3))
     
     return (lrImage, hrImage)
 
@@ -100,9 +101,10 @@ def read_test_example(example):
     (lrImage, hrImage) = get_center_crop(lrImage, hrImage)
 
     lrImage = tf.reshape(lrImage, (32, 32, 3))
-    hrImage = tf.reshape(hrImage, (128, 128, 3))
+    hrImage = tf.reshape(hrImage, (64, 64, 3))
 
     return (lrImage, hrImage)
+
 
 def load_dataset(filenames, batchSize, train=False):
 
@@ -124,3 +126,6 @@ def load_dataset(filenames, batchSize, train=False):
     )
 
     return dataset
+
+
+
